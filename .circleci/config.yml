@@ -1,9 +1,16 @@
 version: 2.1
+orbs:
+  aws-cli: circleci/aws-cli@0.1.13
 jobs:
   build:
     docker:
       - image: mcr.microsoft.com/dotnet/core/sdk:2.1
     steps:
+      - aws-cli/install
+      - aws-cli/configure
+      - run:
+          name: AWS CLI version
+          command: aws --version
       - checkout
       - run:
           name: Build App
@@ -14,4 +21,8 @@ workflows:
   version: 2
   build:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                - orbs
