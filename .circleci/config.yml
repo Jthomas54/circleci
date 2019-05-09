@@ -14,4 +14,9 @@ workflows:
   version: 2
   build:
     jobs:
-      - build
+      - build:
+          context: my-context
+          filters:
+            branches:
+              only:
+                - contexts
