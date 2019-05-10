@@ -7,11 +7,29 @@ jobs:
       - checkout
       - run:
           name: Build App
+          working_directory: ./src
           command: |
             dotnet restore
             dotnet build
+  test:
+    docker:
+      - image: mcr.microsoft.com/dotnet/core/sdk:2.1
+    steps:
+      - checkout
+      - run:
+          name: Test App
+          working_directory: ./tests
+          # dotnet add package JUnitTestLogger to get junit logger
+          command: dotnet test --logger "junit" --results-directory ./results/mstest
+      - store_test_results:
+          path: ./tests/results
 workflows:
   version: 2
   build:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only:
+                tests
+      - test
