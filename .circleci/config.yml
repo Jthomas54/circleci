@@ -10,6 +10,7 @@ jobs:
           command: |
             dotnet restore
             dotnet build
+            echo hello
 workflows:
   version: 2
   build:
